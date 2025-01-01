@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function createDice() {
     const dice = document.createElement('div');
     dice.classList.add('dice');
+    dice.setAttribute('data-rolled', 'false'); // 롤 상태 초기화
     const img = document.createElement('img');
     img.src = getRandomDiceImage();
     img.alt = `주사위 ${getDiceNumber(img.src)}`;
@@ -65,12 +66,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const newImage = getRandomDiceImage();
       img.src = newImage;
       img.alt = `주사위 ${getDiceNumber(newImage)}`;
+      dice.setAttribute('data-rolled', 'true'); // 롤 상태 업데이트
     }, 600); // 50% 시점 (1.2s 애니메이션의 600ms)
 
     // 애니메이션이 끝난 후 클래스 제거
     dice.addEventListener('animationend', () => {
       dice.classList.remove('throwing');
-      // 합계 및 점수 기록은 "모두 던지기"에서만 수행
+      checkAllDiceRolled(); // 모든 주사위가 롤 되었는지 확인
     }, { once: true });
   }
 
@@ -97,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const newImage = getRandomDiceImage();
           img.src = newImage;
           img.alt = `주사위 ${getDiceNumber(newImage)}`;
+          dice.setAttribute('data-rolled', 'true'); // 롤 상태 업데이트
         }, 600); // 50% 시점 (1.2s 애니메이션의 600ms)
 
         // 애니메이션이 끝난 후 합계를 업데이트하고 점수 기록
@@ -106,9 +109,34 @@ document.addEventListener('DOMContentLoaded', () => {
           if (rollsCompleted === totalDice) {
             updateCurrentSum();
             addScore();
+            resetAllDiceRolled(); // 롤 상태 초기화
           }
         }, { once: true });
       }
+    });
+  }
+
+  // 모든 주사위가 롤 되었는지 확인하는 함수
+  function checkAllDiceRolled() {
+    const diceList = document.querySelectorAll('.dice');
+    let allRolled = true;
+    diceList.forEach(dice => {
+      if (dice.getAttribute('data-rolled') !== 'true') {
+        allRolled = false;
+      }
+    });
+    if (allRolled) {
+      updateCurrentSum();
+      addScore();
+      resetAllDiceRolled(); // 롤 상태 초기화
+    }
+  }
+
+  // 모든 주사위의 롤 상태를 초기화하는 함수
+  function resetAllDiceRolled() {
+    const diceList = document.querySelectorAll('.dice');
+    diceList.forEach(dice => {
+      dice.setAttribute('data-rolled', 'false');
     });
   }
 
@@ -141,10 +169,11 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateScoreboard() {
     // 점수 리스트 초기화
     scoreList.innerHTML = '';
-    // 모든 점수 표시
-    scores.slice().reverse().forEach((score, index) => {
+    // 최신 5개의 점수만 표시
+    const recentScores = scores.slice(-5).reverse();
+    recentScores.forEach((score, index) => {
       const li = document.createElement('li');
-      li.textContent = `#${scores.length - index}: ${score}`;
+      li.textContent = `#${scores.length - recentScores.length + index + 1}: ${score}`;
       scoreList.appendChild(li);
     });
   }
