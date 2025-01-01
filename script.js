@@ -32,10 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
     img.alt = `주사위 ${getDiceNumber(img.src)}`;
     dice.appendChild(img);
     // 터치 이벤트 추가
-    dice.addEventListener('click', () => rollDice(dice));
+    dice.addEventListener('click', () => rollIndividualDice(dice));
     dice.addEventListener('touchstart', (e) => {
       e.preventDefault(); // 터치 이벤트의 기본 동작 방지
-      rollDice(dice);
+      rollIndividualDice(dice);
     }, { passive: false });
     return dice;
   }
@@ -52,8 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
     return match ? parseInt(match[1]) : '?';
   }
 
-  // 주사위 던지기 함수
-  function rollDice(dice) {
+  // 개별 주사위 던지기 함수 (합계 및 기록 미업데이트)
+  function rollIndividualDice(dice) {
     if (dice.classList.contains('throwing')) return; // 애니메이션 중복 방지
     dice.classList.add('throwing');
     rollSound.currentTime = 0;
@@ -67,15 +67,14 @@ document.addEventListener('DOMContentLoaded', () => {
       img.alt = `주사위 ${getDiceNumber(newImage)}`;
     }, 600); // 50% 시점 (1.2s 애니메이션의 600ms)
 
-    // 애니메이션이 끝난 후 합계를 업데이트하고 점수 기록
+    // 애니메이션이 끝난 후 클래스 제거
     dice.addEventListener('animationend', () => {
       dice.classList.remove('throwing');
-      updateCurrentSum();
-      addScore();
+      // 합계 및 점수 기록은 "모두 던지기"에서만 수행
     }, { once: true });
   }
 
-  // 모든 주사위 던지기 함수
+  // 모두 주사위 던지기 함수 (합계 및 기록 수행)
   function rollAllDice() {
     const diceList = document.querySelectorAll('.dice');
     if (diceList.length === 0) {
@@ -142,8 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateScoreboard() {
     // 점수 리스트 초기화
     scoreList.innerHTML = '';
-    // 최신 20개의 점수만 표시
-    const recentScores = scores.slice(-20).reverse();
+    // 최신 5개의 점수만 표시
+    const recentScores = scores.slice(-5).reverse();
     recentScores.forEach((score, index) => {
       const li = document.createElement('li');
       li.textContent = `#${scores.length - recentScores.length + index + 1}: ${score}`;
@@ -163,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function addDice() {
     const newDice = createDice();
     diceContainer.appendChild(newDice);
-    updateCurrentSum();
+    // 초기 합계는 이전 합계를 유지
   }
 
   // 주사위 제거 함수
@@ -171,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const diceList = document.querySelectorAll('.dice');
     if (diceList.length > 0) {
       diceContainer.removeChild(diceList[diceList.length - 1]);
-      updateCurrentSum();
+      // 합계는 이전 합계를 유지
     } else {
       alert('더 이상 제거할 주사위가 없습니다!');
     }
