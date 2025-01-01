@@ -1,0 +1,159 @@
+/* styles.css */
+
+/* 기본 스타일 */
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  margin: 0;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h1 {
+  margin-bottom: 20px;
+  font-size: 2em;
+  color: #333;
+  text-align: center;
+}
+
+/* 컨트롤 버튼 스타일 */
+#controls {
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+button {
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* 주사위 컨테이너 스타일 */
+#dice-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+/* 주사위 스타일 */
+.dice {
+  width: 80px;
+  height: 80px;
+  background-color: white;
+  border: 2px solid #333;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+  perspective: 1000px;
+}
+
+.dice img {
+  width: 70px;
+  height: 70px;
+  backface-visibility: hidden;
+}
+
+/* 클릭 시 약간 축소 */
+.dice:active {
+  transform: scale(0.95);
+}
+
+/* 던지기 애니메이션 */
+@keyframes throwDice {
+  0% { transform: translateY(0) rotate(0deg); }
+  20% { transform: translateY(-300px) rotate(1080deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+.throwing {
+  animation: throwDice 1s ease-in-out;
+}
+
+/* 점수판 스타일 */
+#scoreboard {
+  width: 100%;
+  max-width: 500px;
+  background-color: #fff;
+  border: 2px solid #333;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+#scoreboard h2 {
+  margin-top: 0;
+  text-align: center;
+  color: #333;
+}
+
+#score-list {
+  list-style-type: decimal;
+  padding-left: 20px;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+#score-list li {
+  margin-bottom: 5px;
+  font-size: 16px;
+}
+
+#clear-scores {
+  width: 100%;
+  padding: 8px 0;
+  background-color: #f44336;
+}
+
+#clear-scores:hover {
+  background-color: #e53935;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 600px) {
+  .dice {
+    width: 60px;
+    height: 60px;
+  }
+
+  .dice img {
+    width: 50px;
+    height: 50px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  #scoreboard {
+    max-width: 100%;
+  }
+}
