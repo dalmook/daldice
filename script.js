@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const newImage = getRandomDiceImage();
       img.src = newImage;
       img.alt = `주사위 ${getDiceNumber(newImage)}`;
-    }, 200); // 20% 애니메이션 시점 (1초 애니메이션의 200ms)
+    }, 500); // 50% 애니메이션 시점 (1초 애니메이션의 500ms)
 
     // 애니메이션이 끝난 후 합계를 업데이트하고 점수 기록
     dice.addEventListener('animationend', () => {
@@ -82,7 +82,35 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('주사위가 없습니다! "주사위 추가" 버튼을 눌러 주사위를 추가하세요.');
       return;
     }
-    diceList.forEach(dice => rollDice(dice));
+    
+    let rollsCompleted = 0;
+    const totalDice = diceList.length;
+
+    diceList.forEach(dice => {
+      if (!dice.classList.contains('throwing')) {
+        dice.classList.add('throwing');
+        rollSound.currentTime = 0;
+        rollSound.play();
+
+        // 합계 계산을 애니메이션 중간에 수행
+        setTimeout(() => {
+          const img = dice.querySelector('img');
+          const newImage = getRandomDiceImage();
+          img.src = newImage;
+          img.alt = `주사위 ${getDiceNumber(newImage)}`;
+        }, 500); // 50% 애니메이션 시점 (1초 애니메이션의 500ms)
+
+        // 애니메이션이 끝난 후 합계를 업데이트하고 점수 기록
+        dice.addEventListener('animationend', () => {
+          dice.classList.remove('throwing');
+          rollsCompleted++;
+          if (rollsCompleted === totalDice) {
+            updateCurrentSum();
+            addScore();
+          }
+        }, { once: true });
+      }
+    });
   }
 
   // 현재 합계 업데이트 함수
