@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const rollSound = document.getElementById('roll-sound');
   const scoreList = document.getElementById('score-list');
   const clearScoresButton = document.getElementById('clear-scores');
+  const currentSumDisplay = document.getElementById('current-sum');
 
   // 주사위 이미지 경로 배열
   const diceImages = [
@@ -58,15 +59,19 @@ document.addEventListener('DOMContentLoaded', () => {
     rollSound.currentTime = 0;
     rollSound.play();
     
-    // 애니메이션이 끝난 후 새로운 숫자 설정 및 점수 기록
-    dice.addEventListener('animationend', () => {
-      dice.classList.remove('throwing');
+    // 합계 계산을 애니메이션 중간에 수행
+    setTimeout(() => {
       const img = dice.querySelector('img');
       const newImage = getRandomDiceImage();
       img.src = newImage;
       img.alt = `주사위 ${getDiceNumber(newImage)}`;
-      const rolledNumber = getDiceNumber(newImage);
-      addScore(rolledNumber);
+    }, 200); // 20% 애니메이션 시점 (1초 애니메이션의 200ms)
+
+    // 애니메이션이 끝난 후 합계를 업데이트하고 점수 기록
+    dice.addEventListener('animationend', () => {
+      dice.classList.remove('throwing');
+      updateCurrentSum();
+      addScore();
     }, { once: true });
   }
 
@@ -80,9 +85,28 @@ document.addEventListener('DOMContentLoaded', () => {
     diceList.forEach(dice => rollDice(dice));
   }
 
+  // 현재 합계 업데이트 함수
+  function updateCurrentSum() {
+    const diceList = document.querySelectorAll('.dice img');
+    let sum = 0;
+    diceList.forEach(img => {
+      const num = getDiceNumber(img.src);
+      if (typeof num === 'number') {
+        sum += num;
+      }
+    });
+    // 애니메이션 효과 추가
+    currentSumDisplay.classList.add('updating');
+    currentSumDisplay.textContent = `합계: ${sum}`;
+    setTimeout(() => {
+      currentSumDisplay.classList.remove('updating');
+    }, 500);
+  }
+
   // 점수 추가 함수
-  function addScore(number) {
-    scores.push(number);
+  function addScore() {
+    const currentSum = parseInt(currentSumDisplay.textContent.replace('합계: ', '')) || 0;
+    scores.push(currentSum);
     updateScoreboard();
   }
 
@@ -111,6 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function addDice() {
     const newDice = createDice();
     diceContainer.appendChild(newDice);
+    updateCurrentSum();
   }
 
   // 주사위 제거 함수
@@ -118,6 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const diceList = document.querySelectorAll('.dice');
     if (diceList.length > 0) {
       diceContainer.removeChild(diceList[diceList.length - 1]);
+      updateCurrentSum();
     } else {
       alert('더 이상 제거할 주사위가 없습니다!');
     }
