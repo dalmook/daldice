@@ -163,17 +163,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentSum = parseInt(currentSumDisplay.textContent.replace('합계: ', '')) || 0;
     scores.push(currentSum);
     updateScoreboard();
+    // 로컬 스토리지에 저장 (추가 개선 사항)
+    localStorage.setItem('diceScores', JSON.stringify(scores));
   }
 
   // 점수판 업데이트 함수
   function updateScoreboard() {
     // 점수 리스트 초기화
     scoreList.innerHTML = '';
-    // 최신 5개의 점수만 표시
-    const recentScores = scores.slice(-5).reverse();
-    recentScores.forEach((score, index) => {
+    // 모든 점수 표시 (가장 최근이 위로 오도록)
+    scores.slice().reverse().forEach((score, index) => {
       const li = document.createElement('li');
-      li.textContent = `#${scores.length - recentScores.length + index + 1}: ${score}`;
+      li.textContent = `#${scores.length - index}: ${score}`;
       scoreList.appendChild(li);
     });
   }
@@ -183,6 +184,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (confirm('정말로 점수를 초기화하시겠습니까?')) {
       scores = [];
       updateScoreboard();
+      // 로컬 스토리지에서 제거 (추가 개선 사항)
+      localStorage.removeItem('diceScores');
     }
   }
 
@@ -190,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function addDice() {
     const newDice = createDice();
     diceContainer.appendChild(newDice);
-    // 초기 합계는 이전 합계를 유지
+    // 주사위를 추가한 후에도 기존 합계는 유지
   }
 
   // 주사위 제거 함수
@@ -198,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const diceList = document.querySelectorAll('.dice');
     if (diceList.length > 0) {
       diceContainer.removeChild(diceList[diceList.length - 1]);
-      // 합계는 이전 합계를 유지
+      // 주사위를 제거한 후에도 기존 합계는 유지
     } else {
       alert('더 이상 제거할 주사위가 없습니다!');
     }
@@ -210,8 +213,22 @@ document.addEventListener('DOMContentLoaded', () => {
   removeDiceButton.addEventListener('click', removeDice);
   clearScoresButton.addEventListener('click', clearScores);
 
+  // 로컬 스토리지에서 점수 불러오기 (추가 개선 사항)
+  function loadScores() {
+    const storedScores = localStorage.getItem('diceScores');
+    if (storedScores) {
+      scores = JSON.parse(storedScores);
+      updateScoreboard();
+    }
+  }
+
+  // 초기화 함수 수정
+  loadScores();
+
   // 초기 주사위 생성 (예: 2개)
-  for (let i = 0; i < 2; i++) {
-    addDice();
+  if (scores.length === 0) { // 점수가 없는 경우에만 초기 주사위 생성
+    for (let i = 0; i < 2; i++) {
+      addDice();
+    }
   }
 });
