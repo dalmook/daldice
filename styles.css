@@ -56,10 +56,10 @@ button:active {
 }
 
 #current-sum {
-  font-size: 2.5em;
+  font-size: 3em;
   font-weight: bold;
   color: #ff5722;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+  text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
   transition: transform 0.5s, color 0.5s;
 }
 
@@ -113,8 +113,7 @@ button:active {
 /* 던지기 애니메이션 */
 @keyframes throwDice {
   0% { transform: translateY(0) rotate(0deg); }
-  20% { transform: translateY(-300px) rotate(1080deg); }
-  80% { transform: translateY(-150px) rotate(1080deg); }
+  50% { transform: translateY(-300px) rotate(1080deg); }
   100% { transform: translateY(0) rotate(0deg); }
 }
 
@@ -184,6 +183,6 @@ button:active {
   }
 
   #current-sum {
-    font-size: 2em;
+    font-size: 2.5em;
   }
 }
