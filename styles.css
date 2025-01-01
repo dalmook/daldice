@@ -48,6 +48,31 @@ button:active {
   transform: scale(0.98);
 }
 
+/* 합계 표시 스타일 */
+#sum-display {
+  margin-bottom: 20px;
+  text-align: center;
+  animation: fadeIn 1s ease-in-out;
+}
+
+#current-sum {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #ff5722;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+  transition: transform 0.5s, color 0.5s;
+}
+
+#current-sum.updating {
+  transform: scale(1.2);
+  color: #e91e63;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /* 주사위 컨테이너 스타일 */
 #dice-container {
   display: flex;
@@ -89,6 +114,7 @@ button:active {
 @keyframes throwDice {
   0% { transform: translateY(0) rotate(0deg); }
   20% { transform: translateY(-300px) rotate(1080deg); }
+  80% { transform: translateY(-150px) rotate(1080deg); }
   100% { transform: translateY(0) rotate(0deg); }
 }
 
@@ -155,5 +181,9 @@ button:active {
 
   #scoreboard {
     max-width: 100%;
+  }
+
+  #current-sum {
+    font-size: 2em;
   }
 }
