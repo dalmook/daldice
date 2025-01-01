@@ -141,11 +141,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateScoreboard() {
     // 점수 리스트 초기화
     scoreList.innerHTML = '';
-    // 최신 5개의 점수만 표시
-    const recentScores = scores.slice(-5).reverse();
-    recentScores.forEach((score, index) => {
+    // 모든 점수 표시
+    scores.slice().reverse().forEach((score, index) => {
       const li = document.createElement('li');
-      li.textContent = `#${scores.length - recentScores.length + index + 1}: ${score}`;
+      li.textContent = `#${scores.length - index}: ${score}`;
       scoreList.appendChild(li);
     });
   }
