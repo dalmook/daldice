@@ -112,13 +112,25 @@ button:active {
 
 /* 던지기 애니메이션 */
 @keyframes throwDice {
-  0% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-300px) rotate(1080deg); }
-  100% { transform: translateY(0) rotate(0deg); }
+  0% {
+    transform: translateY(0) rotateX(0deg) rotateY(0deg);
+  }
+  25% {
+    transform: translateY(-300px) rotateX(720deg) rotateY(720deg);
+  }
+  50% {
+    transform: translateY(-300px) rotateX(1440deg) rotateY(1440deg);
+  }
+  75% {
+    transform: translateY(-300px) rotateX(2160deg) rotateY(2160deg);
+  }
+  100% {
+    transform: translateY(0) rotateX(2880deg) rotateY(2880deg);
+  }
 }
 
 .throwing {
-  animation: throwDice 1s ease-in-out;
+  animation: throwDice 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
 }
 
 /* 점수판 스타일 */
