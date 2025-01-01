@@ -153,8 +153,8 @@ button:active {
 #score-list {
   list-style-type: decimal;
   padding-left: 20px;
-  max-height: 200px;
-  overflow-y: auto;
+  max-height: 150px; /* 약 5행의 높이로 제한 */
+  overflow-y: auto;  /* 넘치는 내용은 스크롤로 접근 */
   margin-bottom: 10px;
 }
 
@@ -163,6 +163,21 @@ button:active {
   font-size: 16px;
 }
 
+/* 스크롤바 스타일 (선택 사항) */
+#score-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+#score-list::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+
+#score-list::-webkit-scrollbar-track {
+  background-color: rgba(0,0,0,0.05);
+}
+
+/* 점수 초기화 버튼 스타일 */
 #clear-scores {
   width: 100%;
   padding: 8px 0;
@@ -171,6 +186,21 @@ button:active {
 
 #clear-scores:hover {
   background-color: #e53935;
+}
+
+/* 광고 배너 섹션 스타일 */
+#ad-section {
+  width: 100%;
+  max-width: 500px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+#ad-section img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 /* 반응형 디자인 */
@@ -196,5 +226,9 @@ button:active {
 
   #current-sum {
     font-size: 2.5em;
+  }
+
+  #score-list {
+    max-height: 120px; /* 모바일 화면에 맞게 약간 줄임 */
   }
 }
