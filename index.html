@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>🎲 주사위 던지기 어플 🎲</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>🎲 주사위 던지기 🎲</h1>
+  
+  <div id="controls">
+    <button id="add-dice">주사위 추가</button>
+    <button id="remove-dice">주사위 제거</button>
+    <button id="roll-button">모두 던지기</button>
+  </div>
+  
+  <div id="dice-container">
+    <!-- 주사위가 이곳에 생성됩니다 -->
+  </div>
+  
+  <div id="scoreboard">
+    <h2>📜 점수 기록</h2>
+    <ul id="score-list">
+      <!-- 점수 기록이 이곳에 추가됩니다 -->
+    </ul>
+    <button id="clear-scores">점수 초기화</button>
+  </div>
+  
+  <!-- 사운드 효과 -->
+  <audio id="roll-sound" src="sounds/roll.mp3"></audio>
+  
+  <script src="script.js"></script>
+</body>
+</html>
