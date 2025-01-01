@@ -158,11 +158,6 @@ button:active {
   margin-bottom: 10px;
 }
 
-#score-list li {
-  margin-bottom: 5px;
-  font-size: 16px;
-}
-
 /* 스크롤바 스타일 (선택 사항) */
 #score-list::-webkit-scrollbar {
   width: 8px;
@@ -175,6 +170,11 @@ button:active {
 
 #score-list::-webkit-scrollbar-track {
   background-color: rgba(0,0,0,0.05);
+}
+
+#score-list li {
+  margin-bottom: 5px;
+  font-size: 16px;
 }
 
 /* 점수 초기화 버튼 스타일 */
