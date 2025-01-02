@@ -32,6 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
     img.src = getRandomDiceImage();
     img.alt = `주사위 ${getDiceNumber(img.src)}`;
     dice.appendChild(img);
+    // 초기 위치 랜덤 설정 (테이블 내부)
+    setInitialPosition(dice);
     // 터치 이벤트 추가
     dice.addEventListener('click', () => rollIndividualDice(dice));
     dice.addEventListener('touchstart', (e) => {
@@ -39,6 +41,15 @@ document.addEventListener('DOMContentLoaded', () => {
       rollIndividualDice(dice);
     }, { passive: false });
     return dice;
+  }
+
+  // 주사위 초기 위치 설정 함수
+  function setInitialPosition(dice) {
+    const containerRect = diceContainer.getBoundingClientRect();
+    const x = Math.random() * (containerRect.width - 80); // 주사위 너비 고려
+    const y = Math.random() * (containerRect.height - 80); // 주사위 높이 고려
+    dice.style.left = `${x}px`;
+    dice.style.top = `${y}px`;
   }
 
   // 랜덤 주사위 이미지 선택 함수
@@ -53,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return match ? parseInt(match[1]) : '?';
   }
 
-  // 개별 주사위 던지기 함수 (합계 및 기록 미업데이트)
+  // 개별 주사위 던지기 함수
   function rollIndividualDice(dice) {
     if (dice.classList.contains('throwing')) return; // 애니메이션 중복 방지
     dice.classList.add('throwing');
@@ -67,16 +78,16 @@ document.addEventListener('DOMContentLoaded', () => {
       img.src = newImage;
       img.alt = `주사위 ${getDiceNumber(newImage)}`;
       dice.setAttribute('data-rolled', 'true'); // 롤 상태 업데이트
-    }, 600); // 50% 시점 (1.2s 애니메이션의 600ms)
+    }, 600); // 1.2s 애니메이션의 600ms
 
-    // 애니메이션이 끝난 후 클래스 제거
+    // 애니메이션이 끝난 후 클래스 제거 및 체크
     dice.addEventListener('animationend', () => {
       dice.classList.remove('throwing');
       checkAllDiceRolled(); // 모든 주사위가 롤 되었는지 확인
     }, { once: true });
   }
 
-  // 모두 주사위 던지기 함수 (합계 및 기록 수행)
+  // 모두 주사위 던지기 함수
   function rollAllDice() {
     const diceList = document.querySelectorAll('.dice');
     if (diceList.length === 0) {
@@ -100,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
           img.src = newImage;
           img.alt = `주사위 ${getDiceNumber(newImage)}`;
           dice.setAttribute('data-rolled', 'true'); // 롤 상태 업데이트
-        }, 600); // 50% 시점 (1.2s 애니메이션의 600ms)
+        }, 600); // 1.2s 애니메이션의 600ms
 
         // 애니메이션이 끝난 후 합계를 업데이트하고 점수 기록
         dice.addEventListener('animationend', () => {
@@ -137,6 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const diceList = document.querySelectorAll('.dice');
     diceList.forEach(dice => {
       dice.setAttribute('data-rolled', 'false');
+      setInitialPosition(dice); // 다음 라운드를 위해 위치 초기화
     });
   }
 
