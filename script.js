@@ -225,10 +225,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // 초기화 함수 수정
   loadScores();
 
-  // 초기 주사위 생성 (예: 2개)
-  if (scores.length === 0) { // 점수가 없는 경우에만 초기 주사위 생성
-    for (let i = 0; i < 2; i++) {
-      addDice();
-    }
+  // 초기 주사위 생성 (항상 2개로 설정)
+  for (let i = 0; i < 2; i++) {
+    addDice();
   }
 });
