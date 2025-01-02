@@ -2,12 +2,15 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>🎲 주사위 던지기 어플 🎲</title>
+  <title>🎲 갬블 테이블 주사위 던지기 🎲</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 스타일시트 연결 -->
   <link rel="stylesheet" href="styles.css">
+  <!-- Matter.js 라이브러리 추가 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js" integrity="sha512-23EHp5+ewxEvdGzckKIRCV3hLkmOHdAGi/PKcY3Beyp67hx+U2AZexczOm4Ny9oVu/CIYp71XUSpsKfnSztxwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
-  <h1>🎲 주사위 던지기 🎲</h1>
+  <h1>🎲 갬블 테이블 주사위 던지기 🎲</h1>
   
   <div id="controls">
     <button id="add-dice">주사위 추가</button>
@@ -19,11 +22,10 @@
     <span id="current-sum">합계: 0</span>
   </div>
   
-  <!-- 갬블 테이블 컨테이너 추가 -->
+  <!-- 갬블 테이블 컨테이너 -->
   <div id="table">
-    <div id="dice-container">
-      <!-- 주사위가 이곳에 생성됩니다 -->
-    </div>
+    <!-- Matter.js가 렌더링할 요소 -->
+    <canvas id="dice-canvas"></canvas>
   </div>
   
   <div id="scoreboard">
@@ -43,6 +45,7 @@
   <!-- 사운드 효과 -->
   <audio id="roll-sound" src="sounds/roll.mp3"></audio>
   
+  <!-- 스크립트 연결 -->
   <script src="script.js"></script>
 </body>
 </html>
