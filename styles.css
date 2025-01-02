@@ -5,7 +5,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #2E7D32; /* 진한 초록색 배경 */
+  justify-content: flex-start;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
   margin: 0;
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -14,7 +16,7 @@ body {
 h1 {
   margin-bottom: 20px;
   font-size: 2em;
-  color: #fff;
+  color: #333;
   text-align: center;
 }
 
@@ -56,14 +58,14 @@ button:active {
 #current-sum {
   font-size: 3em;
   font-weight: bold;
-  color: #FFD700; /* 금색 */
+  color: #ff5722;
   text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
   transition: transform 0.5s, color 0.5s;
 }
 
 #current-sum.updating {
   transform: scale(1.2);
-  color: #FFA500; /* 주황색 */
+  color: #e91e63;
 }
 
 @keyframes fadeIn {
@@ -71,27 +73,64 @@ button:active {
   to { opacity: 1; }
 }
 
-/* 갬블 테이블 스타일 */
-#table {
-  width: 90%;
-  max-width: 800px;
-  background-image: url('images/table-texture.jpg'); /* 테이블 텍스처 이미지 */
-  background-size: cover;
-  background-position: center;
-  border: 5px solid #1B5E20; /* 테이블 가장자리 진한 초록색 */
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.5);
-  position: relative;
-  overflow: hidden; /* 주사위가 테이블을 벗어나지 않도록 */
+/* 주사위 컨테이너 스타일 */
+#dice-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 30px;
 }
 
-/* 캔버스 스타일 */
-#dice-canvas {
-  display: block;
-  width: 100%;
-  height: 400px; /* 원하는 테이블 높이에 맞게 조정 */
+/* 주사위 스타일 */
+.dice {
+  width: 80px;
+  height: 80px;
+  background-color: white;
+  border: 2px solid #333;
   border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+  perspective: 1000px;
+}
+
+.dice img {
+  width: 70px;
+  height: 70px;
+  backface-visibility: hidden;
+}
+
+/* 클릭 시 약간 축소 */
+.dice:active {
+  transform: scale(0.95);
+}
+
+/* 던지기 애니메이션 */
+@keyframes throwDice {
+  0% {
+    transform: translateY(0) rotateX(0deg) rotateY(0deg);
+  }
+  25% {
+    transform: translateY(-300px) rotateX(720deg) rotateY(720deg);
+  }
+  50% {
+    transform: translateY(-300px) rotateX(1440deg) rotateY(1440deg);
+  }
+  75% {
+    transform: translateY(-300px) rotateX(2160deg) rotateY(2160deg);
+  }
+  100% {
+    transform: translateY(0) rotateX(2880deg) rotateY(2880deg);
+  }
+}
+
+.throwing {
+  animation: throwDice 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
 }
 
 /* 점수판 스타일 */
@@ -166,8 +205,14 @@ button:active {
 
 /* 반응형 디자인 */
 @media (max-width: 600px) {
-  #dice-canvas {
-    height: 250px; /* 모바일 화면에 맞게 조정 */
+  .dice {
+    width: 60px;
+    height: 60px;
+  }
+
+  .dice img {
+    width: 50px;
+    height: 50px;
   }
 
   button {
